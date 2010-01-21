@@ -1,56 +1,7 @@
+$LOAD_PATH.unshift File.dirname(__FILE__)
+
 require 'sinatra'
-
-module Attributor
-  def initialize name, attributes = {}
-    self.name = name
-    attributes.each_pair { |key, val| self.send "#{key}=", val }
-  end
-end
-
-class NHL
-  attr_accessor :conferences
-  
-  def initialize &block
-    conferences = []
-    instance_eval &block
-  end
-  
-  def conference name, &block
-    puts "Conference: #{name}"
-    instance_eval &block
-    # conf = Conference.new name
-    # conferences << 
-  end
-  
-  def division name, &block
-    puts "Division: #{name}"
-    instance_eval &block
-  end
-  
-  def team name, options
-    puts "Team: #{name}"
-    # options.merge :name => name
-    # Team.new options
-  end
-end
-
-class Conference
-  include Attributor
-  attr_accessor :name, :divisions
-end
-
-class Division
-  include Attributor
-  attr_accessor :conference, :name, :teams
-end
-
-class Team
-  include Attributor
-  attr_accessor :division, :games_played, :losses, :name, :overtime_losses, :wins
-  def points
-    (wins * 2) + overtime_losses
-  end
-end
+require 'models'
 
 @nhl = NHL.new do
   conference 'Eastern' do
